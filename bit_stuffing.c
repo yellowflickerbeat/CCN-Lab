@@ -1,11 +1,9 @@
-// BIT STUFFING PROGRAM (EASY VERSION)
-
 #include <stdio.h>
 #include <string.h>
 
 int main() {
 
-    // Start and end flag = 01111110 (HDLC)
+    
     char stuffed[50] = "01111110";   
     char destuffed[50];
 
@@ -16,10 +14,6 @@ int main() {
 
     printf("\nEnter the data bits:\n");
 
-    // ---------------------------------------------------------
-    // BIT STUFFING:
-    // Add '0' after every 5 consecutive '1's
-    // ---------------------------------------------------------
     while ((ch = getchar()) != '\n') {
 
         // Count consecutive 1s
@@ -46,10 +40,7 @@ int main() {
         printf("%c", stuffed[i]);
 
 
-    // ---------------------------------------------------------
-    // BIT DE-STUFFING:
-    // Remove the stuffed '0' after every sequence of 5 '1's
-    // ---------------------------------------------------------
+    // de-stuffing
     oneCount = 0;
     outPos = 0;
 
