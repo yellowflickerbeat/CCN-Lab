@@ -4,9 +4,7 @@
 char t[128], cs[128], g[] = "10110"; 
 int a, e, c, N;
 
-// ------------------------------------------------------
-// XOR OPERATION:
-// Used only when the first bit of remainder (cs[0]) is 1
+// XOR OPERATION when the first bit of remainder (cs[0]) is 1
 // We XOR remainder with generator polynomial (except 1st bit)
 // ------------------------------------------------------
 void xor_op() {
@@ -14,11 +12,9 @@ void xor_op() {
         cs[c] = (cs[c] == g[c]) ? '0' : '1';
 }
 
-// ------------------------------------------------------
-// CRC FUNCTION:
-// Performs long division on data using the generator
+
 // cs[] always holds the CURRENT remainder
-// ------------------------------------------------------
+
 void crc() {
 
     // Load first N bits into remainder
@@ -53,20 +49,12 @@ int main() {
     printf("\nGenerator Polynomial = %s\n", g);
 
     a = strlen(t);   // length of original data
-
-    // --------------------------------------------------
-    // APPEND (N−1) ZEROS → essential step of CRC
-    // This gives space to compute the remainder
-    // --------------------------------------------------
     for (e = a; e < a + N - 1; e++)
         t[e] = '0';
     t[e] = '\0';
 
     printf("Data after appending zeros: %s\n", t);
 
-    // --------------------------------------------------
-    // Perform CRC Division
-    // --------------------------------------------------
     crc();
 
     // Print checksum (last N−1 bits of remainder)
@@ -74,18 +62,14 @@ int main() {
     for (int i = 0; i < N - 1; i++)
         printf("%c", cs[i]);
 
-    // --------------------------------------------------
-    // FORM FINAL CODEWORD = Original Data + CRC
-    // --------------------------------------------------
+    
     for (e = a; e < a + N - 1; e++)
         t[e] = cs[e - a];
     t[e] = '\0';
 
     printf("\nFinal Codeword = %s\n", t);
 
-    // --------------------------------------------------
-    // ERROR DETECTION (Optional)
-    // --------------------------------------------------
+    
     int check, pos;
 
     printf("\nTest Error Detection? 0(yes) 1(no): ");
