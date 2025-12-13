@@ -1,56 +1,38 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <stdlib.h>
+#include <unistd.h>
+#define w 1
+int main()
+{
+int i,f,frames[50];
+printf("\nEnter number of frames to transmit: ");
+scanf("%d",&f);
+printf("\nEnter %d frames: ",f);
+for(i=1;i<=f;i++)
+scanf("%d",&frames[i]);
+printf("\nWith stop and wait protocol the frames will be sent in the following manner (assuming no corruption of frames)\n\n");
+printf("After sending %d frames at each stage sender waits for acknowledgement sent by the receiver\n\n",w);
+printf("if error occur negative acknowledge is detected same frame is resend back\n");  
+for(i=1;i<=f;i++)
+{
+if((random()%2)==1)
+  {
+	if(i%w==0)
+	{
+		printf("%d\n",frames[i]);
+		printf("Acknowledgement of above frames sent is received by sender\n\n");
+	}
+	else
+		printf("%d ",frames[i]);
+  }
+  else
+  {
+	sleep(3);
+         printf("negative acknowledge resend %d frame\n",i);
+	i=i-1;
+	sleep(1);
+   }
 
-#define MAX 1000
-
-int main() {
-
-    char plain[MAX], cipher[MAX];
-    int shift, p, c;
-
-    printf("Enter plaintext:\n");
-    fgets(plain, MAX, stdin);
-
-    // ------------------------------
-    // ENCRYPTION KEY
-    // ------------------------------
-    do {
-        printf("Enter key (1–25): ");
-        scanf("%d", &shift);
-    } while (shift < 1 || shift > 25);
-
-    // ------------------------------
-    // ENCRYPTION
-    // ------------------------------
-    c = 0;
-    for (p = 0; plain[p] != '\0'; p++) {
-        if (isalpha(plain[p])) {
-            char up = toupper(plain[p]);
-            cipher[c++] = ((up - 'A') + shift) % 26 + 'A';
-        }
-    }
-    cipher[c] = '\0';
-
-    printf("\nEncrypted text:\n%s\n", cipher);
-
-    // ------------------------------
-    // DECRYPTION KEY
-    // ------------------------------
-    do {
-        printf("\nEnter key for decryption: ");
-        scanf("%d", &shift);
-    } while (shift < 1 || shift > 25);
-
-    // ------------------------------
-    // DECRYPTION
-    // ------------------------------
-    p = 0;
-    for (c = 0; cipher[c] != '\0'; c++) {
-        plain[p++] = ((cipher[c] - 'A') + (26 - shift)) % 26 + 'A';
-    }
-    plain[p] = '\0';
-
-    printf("\nDecrypted text:\n%s\n", plain);
-
-    return 0;
+}
+return 0;
 }
