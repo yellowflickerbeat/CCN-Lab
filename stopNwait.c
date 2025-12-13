@@ -1,46 +1,38 @@
 #include <stdio.h>
-#include <stdlib.h>   // for random()
-#include <unistd.h>   // for sleep()
+#include <stdlib.h>
+#include <unistd.h>
+#define w 1
+int main()
+{
+int i,f,frames[50];
+printf("\nEnter number of frames to transmit: ");
+scanf("%d",&f);
+printf("\nEnter %d frames: ",f);
+for(i=1;i<=f;i++)
+scanf("%d",&frames[i]);
+printf("\nWith stop and wait protocol the frames will be sent in the following manner (assuming no corruption of frames)\n\n");
+printf("After sending %d frames at each stage sender waits for acknowledgement sent by the receiver\n\n",w);
+printf("if error occur negative acknowledge is detected same frame is resend back\n");  
+for(i=1;i<=f;i++)
+{
+if((random()%2)==1)
+  {
+	if(i%w==0)
+	{
+		printf("%d\n",frames[i]);
+		printf("Acknowledgement of above frames sent is received by sender\n\n");
+	}
+	else
+		printf("%d ",frames[i]);
+  }
+  else
+  {
+	sleep(3);
+         printf("negative acknowledge resend %d frame\n",i);
+	i=i-1;
+	sleep(1);
+   }
 
-#define WINDOW 1      // Stop and Wait → window size = 1
-
-int main() {
-
-    int i, totalFrames, frame[50];
-
-    printf("\nEnter number of frames to transmit: ");
-    scanf("%d", &totalFrames);
-
-    printf("Enter %d frame values: ", totalFrames);
-    for (i = 1; i <= totalFrames; i++)
-        scanf("%d", &frame[i]);
-
-    printf("\nSTOP-AND-WAIT ARQ Simulation (No pipelining)\n");
-    printf("Sender sends ONE frame → waits for ACK before next.\n");
-    printf("If error occurs → Negative ACK → resend same frame.\n\n");
-
-    for (i = 1; i <= totalFrames; i++) {
-
-        // ---------------------------------------------------
-        // RANDOM SIMULATION:
-        // random()%2 → 1 = success, 0 = error
-        // ---------------------------------------------------
-        if (random() % 2 == 1) {   // SUCCESS CASE
-
-            printf("Sending Frame %d\n", frame[i]);
-            printf("ACK received → Frame %d delivered successfully.\n\n", frame[i]);
-
-        } else {                   // ERROR CASE
-
-            printf("ERROR detected for Frame %d.\n", frame[i]);
-            printf("Negative ACK → Resending the same frame...\n");
-            sleep(1);  // Delay for clear visualization
-
-            i--;       // resend the same frame
-            continue;
-        }
-    }
-
-    printf("All frames transmitted successfully!\n");
-    return 0;
+}
+return 0;
 }
